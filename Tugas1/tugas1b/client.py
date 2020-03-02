@@ -18,7 +18,7 @@ try:
     sock.sendall(file_name.encode())
     data = sock.recv(1024)
     if data.decode() == 'ok':
-        with open(file_name+'_get', 'wb+') as file_to_write:
+        with open(file_name+'_get'+str(port), 'wb+') as file_to_write:
             data = sock.recv(1024)
             while data:
                 file_to_write.write(data)

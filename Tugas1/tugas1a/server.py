@@ -21,7 +21,7 @@ while True:
     data = connection.recv(64)
     file_name = data.decode()
     print(file_name)
-    with open(file_name+'_rec', 'wb+') as file_to_write:
+    with open(file_name+'_rec_'+str(port), 'wb+') as file_to_write:
         data = connection.recv(1024)
         while data:
             file_to_write.write(data)
