@@ -2,40 +2,6 @@ from person import Person
 import json
 import logging
 
-'''
-PROTOCOL FORMAT
-
-string terbagi menjadi 2 bagian, dipisahkan oleh spasi
-COMMAND spasi PARAMETER spasi PARAMETER ...
-
-FITUR
-
-- create : untuk membuat record
-  request : create
-  parameter : nama spasi notelpon
-  response : berhasil -> ok
-             gagal -> error
-
-- delete : untuk menghapus record
-  request: delete
-  parameter : id
-  response: berhasil -> OK
-            gagal -> ERROR
-
-- list : untuk melihat daftar record
-  request: list
-  parameter: tidak ada
-  response: daftar record person yang ada
-
-- get : untuk mencari record berdasar nama
-  request: get 
-  parameter: nama yang dicari
-  response: record yang dicari dalam bentuk json format
-
-- jika command tidak dikenali akan merespon dengan ERRCMD
-
-'''
-
 class PersonMachine:
     def proses(self,string_to_process,connection):
         p = Person()
@@ -47,7 +13,7 @@ class PersonMachine:
                 logging.warning("put")
                 nama_file = cstring[1].strip()
                 p.create_data(nama_file,connection)
-                return "OK"
+                return json.dumps("File Sent")
             elif (command=='list'):
                 logging.warning("list")
                 hasil = p.list_data()

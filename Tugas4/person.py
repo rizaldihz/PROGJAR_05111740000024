@@ -10,11 +10,8 @@ class Person:
     def create_data(self,nama=None,connection=None):
         if (nama is None or connection is None):
             return False
-
-        print('masuk isni')
         now = datetime.now()
         current_time = now.strftime("%d-%m-%Y %H:%M:%S")
-        print("date and time =", current_time)
 
         get_size = connection.recv(4)
         file_size = int.from_bytes(get_size,byteorder='big')
@@ -33,7 +30,9 @@ class Person:
         for i in self.data.keys():
             try:    
                 if(self.data[i]['nama_file'].lower()==nama.lower()):
-                    self.data[i]['last_update'] = current_time
+                    temp = self.data[i]
+                    temp['last_update'] = current_time
+                    self.data[i] = temp
                     duplicate = True
             except:
                 duplicate = False
@@ -51,20 +50,17 @@ class Person:
                 size = os.path.getsize(nama)
                 val = size.to_bytes(4,byteorder='big')
                 connection.send(val)
-                # print(f"uploading {nama_file}")
                 with open(nama, 'rb') as file_to_send:
                     for byte in file_to_send:
                         connection.sendall(byte)
                 file_to_send.close()
-                return "Success"
+                return "File Downloaded"
+
         size = 0
         val = size.to_bytes(4,byteorder='big')
         connection.send(val)
-        return "No File"
-    def delete_data(self,id=None):
-        if (id is None):
-            return False
-        del self.data[id]
+        return "No Such File"
+    
     def list_data(self):
         k = [{'nama_file':self.data[i]['nama_file'],'last_update':self.data[i]['last_update']} for i in self.data.keys()]
         return k
