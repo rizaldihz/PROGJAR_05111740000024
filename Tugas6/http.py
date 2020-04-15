@@ -47,18 +47,6 @@ class HttpServer:
 		except IndexError:
 			return self.response(400,'Bad Request','',{})
 	def http_get(self,object_address):
-		files = []
-		if os.name == 'nt':
-			files = os.listdir()
-			files = [f'./{x}' for x in files]
-		else:
-			files = glob('./*')
-		print(str(files))
-		thedir='.'
-		print(object_address)
-		if thedir+object_address not in files and object_address != '/':
-			return self.response(404,'Not Found','',{})
-		
 		isi = '<h1>SERVER HTTP</h1>'
 		
 		return self.response(200,'OK',isi)
@@ -66,12 +54,6 @@ class HttpServer:
 
 if __name__=="__main__":
 	httpserver = HttpServer()
-	d = httpserver.proses('GET testing.txt HTTP/1.0')
-	print(d)
-	d = httpserver.http_get('testing2.txt')
-	print(d)
-	d = httpserver.http_get('testing.txt')
-	print(d)
 
 
 
