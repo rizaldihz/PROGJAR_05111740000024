@@ -3,7 +3,7 @@ import time
 import sys
 import asyncore
 import logging
-from async_server import server_run
+from async_server import Server as worker
 
 
 
@@ -61,7 +61,7 @@ class Server(asyncore.dispatcher):
 		self.listen(5)
 		self.bservers = BackendList()
 		self.request = 0
-		server_run(self.bservers.servers)
+		workersementara = worker(self.bservers.servers[0])
 		logging.warning("load balancer running on port {}" . format(portnumber))
 
 	def handle_accept(self):
@@ -74,7 +74,7 @@ class Server(asyncore.dispatcher):
 			if((self.request % 100) == 0):
 				self.bservers.last_port += 1
 				self.bservers.addserver(('127.0.0.1',self.bservers.last_port))
-				server_run([('127.0.0.1',self.bservers.last_port)])
+				workersementara = worker(('127.0.0.1',self.bservers.last_port))
 
 			#menentukan ke server mana request akan diteruskan
 			bs = self.bservers.getserver()
@@ -84,7 +84,8 @@ class Server(asyncore.dispatcher):
 			#mendapatkan handler dan socket dari client
 			handler = ProcessTheClient(sock)
 			handler.backend = backend
-
+	def run_server(self,address):
+		server_run(address)
 
 def main():
 	portnumber=44444
